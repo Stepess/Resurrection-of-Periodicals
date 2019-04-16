@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import ua.training.data.CommentRepository;
 import ua.training.model.Comment;
 
@@ -13,7 +14,8 @@ import java.util.List;
 @RequestMapping("/comments")
 public class CommentController {
 
-    public static final int RECENT_COMMENTS_LIMIT = 20;
+    public static final String RECENT_COMMENTS_LIMIT = "20";
+    public static final String MAX_LONG_AS_STRING = "9223372036854775807";
     private final CommentRepository commentRepository;
 
     @Autowired
@@ -22,8 +24,9 @@ public class CommentController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Comment> comments() {
-        return commentRepository.findComments(Long.MAX_VALUE, RECENT_COMMENTS_LIMIT);
+    public List<Comment> comments(@RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
+                                  @RequestParam(value = "count", defaultValue = RECENT_COMMENTS_LIMIT) int count) {
+        return commentRepository.findComments(max, count);
     }
 
 }

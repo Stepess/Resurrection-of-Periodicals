@@ -27,28 +27,52 @@ public class CommentControllerTest {
 
     @Test
     public void shouldReturnRecentComments() throws Exception {
-
         List<Comment> expectedComments = createCommentList(20);
-
         CommentRepository mockRepository = mock(CommentRepository.class);
-
         when(mockRepository.findComments(Long.MAX_VALUE, 20)).thenReturn(expectedComments);
 
-
         controller = new CommentController(mockRepository);
-
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                .setSingleView(
-                        new InternalResourceView("/WEB-INF/views/comments.jsp")
-                )
+                .setSingleView(new InternalResourceView("/WEB-INF/views/comments.jsp"))
                 .build();
 
         mockMvc.perform(get("/comments"))
                 .andExpect(view().name("comments"))
                 .andExpect(model().attributeExists("commentList"))
                 .andExpect(model().attribute("commentList", hasItems(expectedComments.toArray())));
+    }
 
+    @Test
+    public void shouldReturnPagedComments() throws Exception {
+        List<Comment> expectedComments = createCommentList(50);
+        CommentRepository mockRepository = mock(CommentRepository.class);
+        when(mockRepository.findComments(238900, 50))
+                .thenReturn(expectedComments);
 
+        controller = new CommentController(mockRepository);
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setSingleView(new InternalResourceView("/WEB-INF/views/comments.jsp"))
+                .build();
+
+        mockMvc.perform(get("/comments?max=238900&count=50"))
+                .andExpect(view().name("comments"))
+                .andExpect(model().attributeExists("commentList"))
+                .andExpect(model().attribute("commentList", hasItems(expectedComments.toArray())));
+    }
+
+    @Test
+    public void shouldReturnCommentById() throws Exception {
+        Comment expectedComment = new Comment("May the Force be with you!", new Date());
+        CommentRepository mockRepository = mock(CommentRepository.class);
+        when(mockRepository.findOne(42)).thenReturn(expectedComment);
+
+        controller = new CommentController(mockRepository);
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        mockMvc.perform(get("/comments/42"))
+                .andExpect(view().name("comment"))
+                .andExpect(model().attributeExists("comment"))
+                .andExpect(model().attribute("comment", expectedComment));
     }
 
     private List<Comment> createCommentList(int count) {
