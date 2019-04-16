@@ -2,6 +2,8 @@ package ua.training.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +29,12 @@ public class CommentController {
     public List<Comment> comments(@RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
                                   @RequestParam(value = "count", defaultValue = RECENT_COMMENTS_LIMIT) int count) {
         return commentRepository.findComments(max, count);
+    }
+
+    @RequestMapping(value = "/{commentId}", method = RequestMethod.GET)
+    public String comment(@PathVariable long commentId, Model model) {
+        model.addAttribute(commentRepository.findOne(commentId));
+        return "comment";
     }
 
 }

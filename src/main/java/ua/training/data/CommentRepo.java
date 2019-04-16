@@ -17,4 +17,9 @@ public class CommentRepo implements CommentRepository {
                 .mapToObj(i -> new Comment("Comment #" + i, new Date()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Comment findOne(long id) {
+        return new Comment("Comment #" + id, new Date());
+    }
 }

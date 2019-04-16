@@ -8,4 +8,6 @@ public interface CommentRepository {
 
     List<Comment> findComments(long max, int count);
 
+    Comment findOne(long id);
+
 }
