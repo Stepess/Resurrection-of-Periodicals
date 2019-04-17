@@ -31,8 +31,8 @@ public class PeriodicalsControllerTest {
 
     @Test
     public void shouldProcessRegistration() throws Exception {
-        User unsaved = new User("MrDVader", "iAmYourFather", "Dart", "Vader");
-        User saved = new User(42L, "MrDVader", "iAmYourFather", "Dart", "Vader");
+        User unsaved = new User("MrDVader", "iAmYourFather", "mrDart13@farGalaxy.com", "Dart", "Vader");
+        User saved = new User(42L, "MrDVader", "iAmYourFather", "mrDart13@farGalaxy.com","Dart", "Vader");
 
         UserRepository mockRepository = mock(UserRepository.class);
         when(mockRepository.save(unsaved)).thenReturn(saved);
