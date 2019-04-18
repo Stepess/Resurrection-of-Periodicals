@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ua.training.data.UserRepository;
 import ua.training.model.User;
 
@@ -40,6 +38,19 @@ public class PeriodicalsController {
 
         return "redirect:/periodicals/" + user.getUsername();
     }
+
+    // TODO add multipart support
+    /*@RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String processRegistration(@RequestPart("profilePicture") MultipartFile profilePicture,
+                                      @Valid User user, Errors errors) {
+        if (errors.hasErrors()) {
+            return "registerForm";
+        }
+
+        userRepository.save(user);
+
+        return "redirect:/periodicals/" + user.getUsername();
+    }*/
 
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public User profile(@PathVariable String username) {

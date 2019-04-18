@@ -10,4 +10,6 @@ public interface CommentRepository {
 
     Comment findOne(long id);
 
+    void save(Comment comment);
+
 }

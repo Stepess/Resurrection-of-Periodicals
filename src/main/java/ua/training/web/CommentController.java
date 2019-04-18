@@ -3,11 +3,10 @@ package ua.training.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ua.training.data.CommentRepository;
+import ua.training.exception.CommentNotFoundException;
+import ua.training.exception.DuplicateCommentException;
 import ua.training.model.Comment;
 
 import java.util.List;
@@ -33,8 +32,25 @@ public class CommentController {
 
     @RequestMapping(value = "/{commentId}", method = RequestMethod.GET)
     public String comment(@PathVariable long commentId, Model model) {
-        model.addAttribute(commentRepository.findOne(commentId));
+        Comment comment = commentRepository.findOne(commentId);
+
+        if (comment == null) {
+            throw new CommentNotFoundException();
+        }
+
+        model.addAttribute(comment);
         return "comment";
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String saveComment(Comment comment) {
+        commentRepository.save(comment);
+        return "redirect:/comments";
+    }
+
+    @ExceptionHandler(DuplicateCommentException.class)
+    public String handleDuplicateComment() {
+        return "error/dublicate";
     }
 
 }

@@ -22,4 +22,8 @@ public class CommentRepo implements CommentRepository {
     public Comment findOne(long id) {
         return new Comment("Comment #" + id, new Date());
     }
+
+    @Override
+    public void save(Comment comment) {
+    }
 }

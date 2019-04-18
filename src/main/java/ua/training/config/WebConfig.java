@@ -5,11 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 @Configuration
 @EnableWebMvc
@@ -35,6 +39,23 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
         return messageSource;
     }
 
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
+
+    /*@Bean
+    public TilesConfigurer tilesConfigurer() {
+        TilesConfigurer tilesConfigurer = new TilesConfigurer();
+        tilesConfigurer.setDefinitions(new String[]{"/WEB-INF/layout/tiles.xml"});
+        tilesConfigurer.setCheckRefresh(true);
+        return tilesConfigurer;
+    }
+
+    public ViewResolver viewResolver() {
+        return new TilesViewResolver();
+    }
+*/
     /**
      * Finally, this new WebConfig class extends WebMvcConfigurerAdapter and overrides
      * its configureDefaultServletHandling() method. By calling enable() on the given

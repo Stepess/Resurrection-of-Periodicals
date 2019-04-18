@@ -9,7 +9,7 @@ href="<c:url value="/resources/style.css" />" >
 </head>
 <body>
 <h1>Register</h1>
-<sf:form method="POST" modelAttribute="user">
+<sf:form method="POST" modelAttribute="user" enctype="multipart/form-data">
     <sf:errors path="*" element="div" cssClass="errors" />
     <sf:label path="firstName"
               cssErrorClass="error">First Name</sf:label>:
@@ -26,6 +26,10 @@ href="<c:url value="/resources/style.css" />" >
     <sf:label path="password"
               cssErrorClass="error">Password</sf:label>:
     <sf:password path="password" /><br/>
+    <label>Profile Picture</label>:
+    <input type="file"
+    name="profilePicture"
+    accept="image/jpeg,image/png,image/gif" /><br/>
     <input type="submit" value="Register" />
 </sf:form>
 </body>
