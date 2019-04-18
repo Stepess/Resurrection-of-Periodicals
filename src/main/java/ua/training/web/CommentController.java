@@ -48,9 +48,9 @@ public class CommentController {
         return "redirect:/comments";
     }
 
-    @ExceptionHandler(DuplicateCommentException.class)
+    /*@ExceptionHandler(DuplicateCommentException.class)
     public String handleDuplicateComment() {
         return "error/dublicate";
     }
-
+*/
 }

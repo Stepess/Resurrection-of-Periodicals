@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.data.UserRepository;
 import ua.training.model.User;
 
@@ -29,14 +30,15 @@ public class PeriodicalsController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegistration(@Valid User user, Errors errors) {
+    public String processRegistration(@Valid User user, Errors errors, RedirectAttributes model) {
         if (errors.hasErrors()) {
             return "registerForm";
         }
 
         userRepository.save(user);
-
-        return "redirect:/periodicals/" + user.getUsername();
+        model.addAttribute("username", user.getUsername());
+        model.addFlashAttribute(user);
+        return "redirect:/periodicals/{username}";
     }
 
     // TODO add multipart support
@@ -53,8 +55,11 @@ public class PeriodicalsController {
     }*/
 
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
-    public User profile(@PathVariable String username) {
-        return userRepository.findByUsername(username);
+    public String profile(@PathVariable String username, Model model) {
+        if (!model.containsAttribute("user")) {
+            userRepository.findByUsername(username);
+        }
+        return "profile";
     }
 
 }
