@@ -5,9 +5,12 @@ import org.springframework.web.servlet.support.
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
+import java.io.File;
 
 public class WebAppInitializer
         extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    private static final long MAX_UPLOAD_SIZE = 10L * 1024L * 1024L;
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -26,6 +29,17 @@ public class WebAppInitializer
 
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-        registration.setMultipartConfig(new MultipartConfigElement("/tmp/periodicals/uploads", 2097152, 4194304, 0));
+        File file = new File("/tmp/uploads");
+
+        String absolutePath = file.getAbsolutePath();
+
+        if (file.mkdirs()) {
+            System.out.println(String.format("[WARN] Note %s directory for file uploading was created!", absolutePath));
+        } else {
+            System.out.println(String.format("[WARN] Note files will be uploaded into %s", absolutePath));
+        }
+
+        registration.setMultipartConfig(
+                new MultipartConfigElement(absolutePath, MAX_UPLOAD_SIZE, MAX_UPLOAD_SIZE * 2, 0));
     }
 }

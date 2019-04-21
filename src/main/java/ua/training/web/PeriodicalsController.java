@@ -11,6 +11,8 @@ import ua.training.data.UserRepository;
 import ua.training.model.User;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/periodicals")
@@ -30,9 +32,14 @@ public class PeriodicalsController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegistration(@Valid User user, Errors errors, RedirectAttributes model) {
+    public String processRegistration(@RequestPart(value = "profilePicture", required = false) MultipartFile multipartFile,
+                                      @Valid User user, Errors errors, RedirectAttributes model) throws IOException {
         if (errors.hasErrors()) {
             return "registerForm";
+        }
+
+        if (! multipartFile.isEmpty()) {
+            multipartFile.transferTo(new File(user.getUsername() + "_" + multipartFile.getOriginalFilename()));
         }
 
         userRepository.save(user);
