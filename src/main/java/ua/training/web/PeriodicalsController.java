@@ -38,7 +38,7 @@ public class PeriodicalsController {
             return "registerForm";
         }
 
-        if (! multipartFile.isEmpty()) {
+        if (multipartFile != null && !multipartFile.isEmpty()) {
             multipartFile.transferTo(new File(user.getUsername() + "_" + multipartFile.getOriginalFilename()));
         }
 

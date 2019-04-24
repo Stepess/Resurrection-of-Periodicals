@@ -1,6 +1,7 @@
 package ua.training.data;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 import ua.training.model.User;
@@ -8,6 +9,7 @@ import ua.training.model.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Primary
 @Repository
 public class JdbcUserRepository implements UserRepository {
 

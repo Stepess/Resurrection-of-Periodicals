@@ -40,7 +40,8 @@ public class PeriodicalsControllerTest {
         controller = new PeriodicalsController(mockRepository);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
-        mockMvc.perform(post("/periodicals/register")
+        mockMvc.perform(
+                post("/periodicals/register")
         .param("firstName", "Dart")
         .param("lastName", "Vader")
         .param("username", "MrDVader")
