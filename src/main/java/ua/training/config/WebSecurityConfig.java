@@ -51,10 +51,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/periodicals/me").authenticated()
+                .antMatchers("/").permitAll()
+                .antMatchers("/console/**").permitAll()
+                //.authorizeRequests()
+                /*.antMatchers("/periodicals/me").authenticated()
                 .antMatchers(HttpMethod.POST, "/periodicals").authenticated()
-                .antMatchers("/periodicals/**", "/periodicals/mine").authenticated()
-                .anyRequest().permitAll()
+                .antMatchers("/periodicals/**", "/periodicals/mine").authenticated()*/
+                //.anyRequest().permitAll()
                 // to require https
                 .and()
                 .requiresChannel()
@@ -66,6 +69,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .tokenValiditySeconds(2419200)
                 .key("periodicals13");
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
         /*<input id="remember_me" name="remember-me" type="checkbox"/>
 <label for="remember_me" class="inline">Remember me</label>*/
     }

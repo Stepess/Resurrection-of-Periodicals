@@ -18,9 +18,13 @@ public class AppConfig {
     //TODO add sql scripts
     public DataSource embeddedDataSource() {
         return new EmbeddedDatabaseBuilder()
+                .generateUniqueName(false)
+                .setName("testdb")
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("classpath:schema.sql")
-                .addScript("classpath:test-data.sql")
+                .addScript("classpath:data.sql")
+                .setScriptEncoding("UTF-8")
+                .ignoreFailedDrops(true)
                 .build();
     }
 
@@ -31,7 +35,7 @@ public class AppConfig {
         dataSource.setDriverClassName("org.h2.Driver");
         dataSource.setUrl("jdbc:h2:tcp://localhost/~/periodicals");
         dataSource.setUsername("sa");
-        dataSource.setPassword("");
+        dataSource.setPassword("1111");
         dataSource.setInitialSize(5);
         dataSource.setMaxTotal(10);
         return dataSource;

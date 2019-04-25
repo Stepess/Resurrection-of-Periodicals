@@ -1,9 +1,12 @@
 package ua.training.config;
 
+import org.h2.server.web.WebServlet;
 import org.springframework.web.servlet.support.
         AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import java.io.File;
 
@@ -41,5 +44,13 @@ public class WebAppInitializer
 
         registration.setMultipartConfig(
                 new MultipartConfigElement(absolutePath, MAX_UPLOAD_SIZE, MAX_UPLOAD_SIZE * 2, 0));
+    }
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+        ServletRegistration.Dynamic registration = servletContext.addServlet("h2-console", new WebServlet());
+        registration.setLoadOnStartup(2);
+        registration.addMapping("/console/*");
     }
 }
