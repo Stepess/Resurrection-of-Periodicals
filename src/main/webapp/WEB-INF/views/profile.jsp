@@ -9,13 +9,13 @@ href="<c:url value="/resources/style.css" />" >
 </head>
 <body>
 <h1>Your Profile</h1>
-Hello <security:authentication property="principal.username" />!
+<%--Hello <security:authentication property="principal.username" />!--%>
  <c:out value="${user.username}" /><br/>
  <c:out value="${user.firstName}" />
  <c:out value="${user.lastName}" />
 
-<s:url href="/periodicals/{username}" var="periodicalsUrl">
+<%--<s:url href="/periodicals/{username}" var="periodicalsUrl">
  <s:param name="username" value="jbauer" />
-</s:url>
+</s:url>--%>
 </body>
 </html>

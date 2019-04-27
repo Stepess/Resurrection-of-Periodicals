@@ -1,6 +1,7 @@
 package ua.training.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.h2.jdbcx.JdbcDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,12 +22,23 @@ public class AppConfig {
                 .generateUniqueName(false)
                 .setName("testdb")
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("classpath:schema.sql")
-                .addScript("classpath:data.sql")
+                .addScript("classpath:sql/schema.sql")
+                .addScript("classpath:sql/data.sql")
                 .setScriptEncoding("UTF-8")
                 .ignoreFailedDrops(true)
                 .build();
     }
+
+    /*@Bean
+    public DataSource devDataSource() {
+        JdbcDataSource ds = new JdbcDataSource();
+        ds.setUrl("jdbc:h2:~/test;" +
+                "INIT=RUNSCRIPT FROM 'classpath:sql/schema.sql'\\;RUNSCRIPT FROM 'classpath:sql/data.sql';" +
+                "DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE");
+        ds.setUser("sa");
+        ds.setPassword("");
+        return ds;
+    }*/
 
     @Profile("QA")
     @Bean

@@ -1,15 +1,14 @@
 package ua.training.data;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 import ua.training.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-@Primary
 @Repository
 public class JdbcUserRepository implements UserRepository {
 
@@ -21,6 +20,9 @@ public class JdbcUserRepository implements UserRepository {
     public static final String INSERT_USER =
             "INSERT INTO users (username, password, email, firstName, lastName) " +
                     "values (?, ?, ?, ?, ?)";
+
+    public static final String FIND_ALL_USERS =
+            "SELECT * FROM users";
 
     @Autowired
     public JdbcUserRepository(JdbcOperations jdbcOperations) {
@@ -37,6 +39,13 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User findByUsername(String username) {
         return jdbcOperations.queryForObject(FIND_USER_BY_USERNAME, this::mapUser, username);
+    }
+
+    @Override
+    public List<User> findAll() {
+        List<User> users = jdbcOperations.queryForList(FIND_ALL_USERS, User.class);
+        System.out.println(users);
+        return users;
     }
 
     private User mapUser(ResultSet rs, int rows) throws SQLException {

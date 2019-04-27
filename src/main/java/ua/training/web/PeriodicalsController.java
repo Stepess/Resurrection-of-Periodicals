@@ -48,23 +48,10 @@ public class PeriodicalsController {
         return "redirect:/periodicals/{username}";
     }
 
-    // TODO add multipart support
-    /*@RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String processRegistration(@RequestPart("profilePicture") MultipartFile profilePicture,
-                                      @Valid User user, Errors errors) {
-        if (errors.hasErrors()) {
-            return "registerForm";
-        }
-
-        userRepository.save(user);
-
-        return "redirect:/periodicals/" + user.getUsername();
-    }*/
-
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public String profile(@PathVariable String username, Model model) {
         if (!model.containsAttribute("user")) {
-            userRepository.findByUsername(username);
+            model.addAttribute(userRepository.findByUsername(username));
         }
         return "profile";
     }
