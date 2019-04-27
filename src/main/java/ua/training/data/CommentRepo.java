@@ -24,6 +24,7 @@ public class CommentRepo implements CommentRepository {
     }
 
     @Override
-    public void save(Comment comment) {
+    public Comment save(Comment comment) {
+        return null;
     }
 }

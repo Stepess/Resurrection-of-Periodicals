@@ -1,10 +1,10 @@
-package ua.training.data;
+package ua.training.service;
 
 import ua.training.model.Comment;
 
 import java.util.List;
 
-public interface CommentRepository {
+public interface CommentService {
 
     List<Comment> findComments(long max, int count);
 
