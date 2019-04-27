@@ -5,10 +5,11 @@
     <title>Periodicals</title>
 </head>
 <body>
-<div class="spittleView">
-    <div class="spittleMessage"><c:out value="${comment.message}" /></div>
+<div class="commentView">
+    <div class="commentUserId"><c:out value="${comment.userId}"/> </div>
+    <div class="commentMessage"><c:out value="${comment.message}" /></div>
     <div>
-        <span class="spittleTime"><c:out value="${comment.date}" /></span>
+        <span class="commentTime"><c:out value="${comment.date}" /></span>
     </div>
 </div>
 </body>

@@ -11,6 +11,7 @@
 <body>
 <h1><s:message code="periodicals.welcome"/> </h1>
 <a href="<c:url value="/comments" />">Comments</a> |
-<a href="<s:url value="/periodicals/register" />">Register</a>
+<a href="<s:url value="/periodicals/register" />">Register</a> |
+<a href="<s:url value="/comment/add"/>">Add comment</a>
 </body>
 </html>

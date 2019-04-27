@@ -9,13 +9,14 @@
 </head>
 <body>
 <c:forEach items="${commentList}" var="comment">
-    <li id="spittle_<c:out value="comment.id"/>">
-        <div class="spittleMessage">
+    <li id="comment_<c:out value="comment.id"/>">
+        <div class="commentUserId"><c:out value="${comment.userId}"/> </div>
+        <div class="commentMessage">
             <c:out value="${comment.message}"/>
         </div>
         <div>
-            <span class="spittleTime"><c:out value="${comment.date}"/></span>
-            <span class="spittleLocation">
+            <span class="commentTime"><c:out value="${comment.date}"/></span>
+            <span class="commentLocation">
 (<c:out value="${comment.latitude}"/>,
 <c:out value="${comment.longitude}"/>)</span>
         </div>

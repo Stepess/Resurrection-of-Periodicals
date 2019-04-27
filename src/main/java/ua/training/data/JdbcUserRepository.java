@@ -18,8 +18,8 @@ public class JdbcUserRepository implements UserRepository {
             "SELECT * FROM users WHERE username = ?";
 
     public static final String INSERT_USER =
-            "INSERT INTO users (username, password, email, firstName, lastName) " +
-                    "values (?, ?, ?, ?, ?)";
+            "INSERT INTO users (username, password, email, firstName, lastName, enabled) " +
+                    "values (?, ?, ?, ?, ?, ?)";
 
     public static final String FIND_ALL_USERS =
             "SELECT * FROM users WHERE id<? LIMIT ?";
@@ -32,7 +32,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User save(User user) {
         jdbcOperations.update(INSERT_USER, user.getUsername(), user.getLastName(),
-                user.getEmail(), user.getFirstName(), user.getLastName());
+                user.getEmail(), user.getFirstName(), user.getLastName(), true);
         return user;
     }
 
