@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceView;
-import ua.training.data.CommentRepository;
+import ua.training.service.CommentService;
 import ua.training.model.Comment;
 
 import java.util.Date;
@@ -28,10 +28,10 @@ public class CommentControllerTest {
     @Test
     public void shouldReturnRecentComments() throws Exception {
         List<Comment> expectedComments = createCommentList(20);
-        CommentRepository mockRepository = mock(CommentRepository.class);
-        when(mockRepository.findComments(Long.MAX_VALUE, 20)).thenReturn(expectedComments);
+        CommentService mockService = mock(CommentService.class);
+        when(mockService.findComments(Long.MAX_VALUE, 20)).thenReturn(expectedComments);
 
-        controller = new CommentController(mockRepository);
+        controller = new CommentController(mockService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setSingleView(new InternalResourceView("/WEB-INF/views/comments.jsp"))
                 .build();
@@ -45,11 +45,11 @@ public class CommentControllerTest {
     @Test
     public void shouldReturnPagedComments() throws Exception {
         List<Comment> expectedComments = createCommentList(50);
-        CommentRepository mockRepository = mock(CommentRepository.class);
-        when(mockRepository.findComments(238900, 50))
+        CommentService mockService = mock(CommentService.class);
+        when(mockService.findComments(238900, 50))
                 .thenReturn(expectedComments);
 
-        controller = new CommentController(mockRepository);
+        controller = new CommentController(mockService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setSingleView(new InternalResourceView("/WEB-INF/views/comments.jsp"))
                 .build();
@@ -63,10 +63,10 @@ public class CommentControllerTest {
     @Test
     public void shouldReturnCommentById() throws Exception {
         Comment expectedComment = new Comment(null, "May the Force be with you!", new Date());
-        CommentRepository mockRepository = mock(CommentRepository.class);
-        when(mockRepository.findOne(42)).thenReturn(expectedComment);
+        CommentService mockService = mock(CommentService.class);
+        when(mockService.findOne(42)).thenReturn(expectedComment);
 
-        controller = new CommentController(mockRepository);
+        controller = new CommentController(mockService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         mockMvc.perform(get("/comments/42"))

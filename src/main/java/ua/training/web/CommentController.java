@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ua.training.data.CommentRepository;
+import ua.training.service.CommentService;
 import ua.training.exception.CommentNotFoundException;
 import ua.training.model.Comment;
 
@@ -16,22 +16,23 @@ public class CommentController {
 
     public static final String RECENT_COMMENTS_LIMIT = "20";
     public static final String MAX_LONG_AS_STRING = Constants.MAX_LONG_AS_STRING;
-    private final CommentRepository commentRepository;
+
+    private final CommentService commentService;
 
     @Autowired
-    public CommentController(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Comment> comments(@RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
                                   @RequestParam(value = "count", defaultValue = RECENT_COMMENTS_LIMIT) int count) {
-        return commentRepository.findComments(max, count);
+        return commentService.findComments(max, count);
     }
 
     @RequestMapping(value = "/{commentId}", method = RequestMethod.GET)
     public String comment(@PathVariable long commentId, Model model) {
-        Comment comment = commentRepository.findOne(commentId);
+        Comment comment = commentService.findOne(commentId);
 
         if (comment == null) {
             throw new CommentNotFoundException();
@@ -43,7 +44,7 @@ public class CommentController {
 
     @RequestMapping(method = RequestMethod.POST)
     public String saveComment(Comment comment) {
-        commentRepository.save(comment);
+        commentService.save(comment);
         return "redirect:/comments";
     }
 

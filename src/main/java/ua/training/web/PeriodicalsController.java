@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ua.training.data.UserRepository;
+import ua.training.service.UserService;
 import ua.training.model.User;
 
 import javax.validation.Valid;
@@ -19,13 +19,14 @@ import java.util.List;
 @RequestMapping("/periodicals")
 public class PeriodicalsController {
 
-    private final UserRepository userRepository;
     public static final String MAX_LONG_AS_STRING  = Constants.MAX_LONG_AS_STRING;
     public static final String RECENT_USERS_LIMIT = "20";
 
+    private final UserService userService;
+
     @Autowired
-    public PeriodicalsController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public PeriodicalsController(UserService userService) {
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -45,7 +46,7 @@ public class PeriodicalsController {
             multipartFile.transferTo(new File(user.getUsername() + "_" + multipartFile.getOriginalFilename()));
         }
 
-        userRepository.save(user);
+        userService.save(user);
         model.addAttribute("username", user.getUsername());
         model.addFlashAttribute(user);
         return "redirect:/periodicals/{username}";
@@ -54,7 +55,7 @@ public class PeriodicalsController {
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public String profile(@PathVariable String username, Model model) {
         if (!model.containsAttribute("user")) {
-            model.addAttribute(userRepository.findByUsername(username));
+            model.addAttribute(userService.findByUsername(username));
         }
         return "profile";
     }
@@ -64,7 +65,7 @@ public class PeriodicalsController {
             @RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
             @RequestParam(value = "count", defaultValue = RECENT_USERS_LIMIT) int count
     ) {
-       return userRepository.findAll(max, count);
+       return userService.findUsers(max, count);
     }
 
 }

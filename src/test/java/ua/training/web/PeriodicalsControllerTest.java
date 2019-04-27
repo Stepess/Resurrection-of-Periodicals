@@ -5,6 +5,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ua.training.data.UserRepository;
 import ua.training.model.User;
+import ua.training.service.UserService;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,8 +21,8 @@ public class PeriodicalsControllerTest {
 
     @Test
     public void shouldShowRegisterForm() throws Exception {
-        UserRepository mockRepository = mock(UserRepository.class);
-        controller = new PeriodicalsController(mockRepository);
+        UserService mockService = mock(UserService.class);
+        controller = new PeriodicalsController(mockService);
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
@@ -34,10 +35,10 @@ public class PeriodicalsControllerTest {
         User unsaved = new User("MrDVader", "iAmYourFather", "mrDart13@farGalaxy.com", "Dart", "Vader");
         User saved = new User(42L, "MrDVader", "iAmYourFather", "mrDart13@farGalaxy.com","Dart", "Vader");
 
-        UserRepository mockRepository = mock(UserRepository.class);
-        when(mockRepository.save(unsaved)).thenReturn(saved);
+        UserService mockService = mock(UserService.class);
+        when(mockService.save(unsaved)).thenReturn(saved);
 
-        controller = new PeriodicalsController(mockRepository);
+        controller = new PeriodicalsController(mockService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         mockMvc.perform(
