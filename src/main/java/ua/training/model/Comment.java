@@ -7,17 +7,19 @@ import java.util.Date;
 
 public class Comment {
     private final Long id;
+    private final Long userId;
     private final String message;
     private final Date date;
     private final Double latitude;
     private final Double longitude;
 
-    public Comment(String message, Date date) {
-        this(message, date, null, null);
+    public Comment(Long userId, String message, Date date) {
+        this(userId, message, date, null, null);
     }
 
-    public Comment(String message, Date date, Double latitude, Double longitude) {
+    public Comment(Long userId, String message, Date date, Double latitude, Double longitude) {
         this.id = null;
+        this.userId = userId;
         this.message = message;
         this.date = date;
         this.latitude = latitude;
@@ -27,6 +29,8 @@ public class Comment {
     public Long getId() {
         return id;
     }
+
+    public Long getUserId(){ return userId;}
 
     public String getMessage() {
         return message;

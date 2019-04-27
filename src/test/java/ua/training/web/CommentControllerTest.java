@@ -62,7 +62,7 @@ public class CommentControllerTest {
 
     @Test
     public void shouldReturnCommentById() throws Exception {
-        Comment expectedComment = new Comment("May the Force be with you!", new Date());
+        Comment expectedComment = new Comment(null, "May the Force be with you!", new Date());
         CommentRepository mockRepository = mock(CommentRepository.class);
         when(mockRepository.findOne(42)).thenReturn(expectedComment);
 
@@ -77,7 +77,7 @@ public class CommentControllerTest {
 
     private List<Comment> createCommentList(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> new Comment("Comment #" + i, new Date()))
+                .mapToObj(i -> new Comment(null, "Comment #" + i, new Date()))
                 .collect(Collectors.toList());
 
     }
