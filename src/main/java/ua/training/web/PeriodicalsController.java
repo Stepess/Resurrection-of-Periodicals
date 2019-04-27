@@ -13,12 +13,15 @@ import ua.training.model.User;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/periodicals")
 public class PeriodicalsController {
 
     private final UserRepository userRepository;
+    public static final String MAX_LONG_AS_STRING  = Constants.MAX_LONG_AS_STRING;
+    public static final String RECENT_USERS_LIMIT = "20";
 
     @Autowired
     public PeriodicalsController(UserRepository userRepository) {
@@ -54,6 +57,14 @@ public class PeriodicalsController {
             model.addAttribute(userRepository.findByUsername(username));
         }
         return "profile";
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public List<User> users(
+            @RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
+            @RequestParam(value = "count", defaultValue = RECENT_USERS_LIMIT) int count
+    ) {
+       return userRepository.findAll(max, count);
     }
 
 }

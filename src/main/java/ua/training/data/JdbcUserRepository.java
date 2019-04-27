@@ -22,7 +22,7 @@ public class JdbcUserRepository implements UserRepository {
                     "values (?, ?, ?, ?, ?)";
 
     public static final String FIND_ALL_USERS =
-            "SELECT * FROM users";
+            "SELECT * FROM users WHERE id<? LIMIT ?";
 
     @Autowired
     public JdbcUserRepository(JdbcOperations jdbcOperations) {
@@ -31,9 +31,9 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-         jdbcOperations.update(INSERT_USER, user.getUsername(), user.getLastName(),
+        jdbcOperations.update(INSERT_USER, user.getUsername(), user.getLastName(),
                 user.getEmail(), user.getFirstName(), user.getLastName());
-         return user;
+        return user;
     }
 
     @Override
@@ -42,10 +42,8 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() {
-        List<User> users = jdbcOperations.queryForList(FIND_ALL_USERS, User.class);
-        System.out.println(users);
-        return users;
+    public List<User> findAll(long max, int count) {
+        return jdbcOperations.query(FIND_ALL_USERS, new Object[] {max, count}, this::mapUser);
     }
 
     private User mapUser(ResultSet rs, int rows) throws SQLException {

@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.training.data.CommentRepository;
 import ua.training.exception.CommentNotFoundException;
-import ua.training.exception.DuplicateCommentException;
 import ua.training.model.Comment;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 public class CommentController {
 
     public static final String RECENT_COMMENTS_LIMIT = "20";
-    public static final String MAX_LONG_AS_STRING = "9223372036854775807";
+    public static final String MAX_LONG_AS_STRING = Constants.MAX_LONG_AS_STRING;
     private final CommentRepository commentRepository;
 
     @Autowired

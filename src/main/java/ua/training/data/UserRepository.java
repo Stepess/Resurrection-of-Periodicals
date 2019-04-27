@@ -10,6 +10,6 @@ public interface UserRepository {
 
     User findByUsername(String username);
 
-    List<User> findAll();
+    List<User> findAll(long max, int count);
 
 }
