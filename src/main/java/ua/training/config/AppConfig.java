@@ -61,7 +61,7 @@ public class AppConfig {
         return dataSource;
     }
 
-    @Bean
+    /*@Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBean ls = new LocalSessionFactoryBean();
         ls.setDataSource(dataSource);
@@ -71,8 +71,8 @@ public class AppConfig {
         ls.setHibernateProperties(properties);
         return ls;
     }
-
-    @Bean
+*/
+   /* @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setDatabase(Database.H2);
@@ -92,7 +92,7 @@ public class AppConfig {
         emfb.setPackagesToScan("ua.training.model");
         return emfb;
     }
-
+*/
     @Bean
     public BeanPostProcessor persistenceTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();

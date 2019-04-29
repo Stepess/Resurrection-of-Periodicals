@@ -8,7 +8,7 @@ import javax.persistence.PersistenceUnit;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
+//@Repository
 public class JpaUserRepository implements UserRepository {
 
     @PersistenceUnit

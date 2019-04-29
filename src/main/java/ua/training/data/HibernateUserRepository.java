@@ -13,7 +13,7 @@ import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.List;
 
-@Repository
+//@Repository
 public class HibernateUserRepository implements UserRepository{
 
     private final SessionFactory sessionFactory;
