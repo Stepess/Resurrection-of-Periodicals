@@ -4,14 +4,17 @@ import org.springframework.stereotype.Repository;
 import ua.training.model.User;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-//@Repository
+@Repository
+@Transactional
 public class JpaUserRepository implements UserRepository {
 
-    @PersistenceUnit
+    @PersistenceContext
     private EntityManagerFactory entityManagerFactory;
 
     @Override
