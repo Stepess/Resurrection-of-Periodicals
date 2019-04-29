@@ -1,0 +1,1 @@
+(login, password, email, role, datetime_of_registration, first_name_ua, first_name_en, last_name_ua, last_name_en, address)

@@ -1,0 +1,5 @@
+insert into user (login, password, email, role, first_name_national, first_name_en, last_name_national, last_name_en, address_national, address_en, account) values 
+('senpai', md5('qwerty13'), 'stepanersh@gmail.com', 'admin', 'Степан', 'Stepan', 'Єршов', 'Yershov', 'Україна, Київ, вул. Борщагівська', 'Ukraine, Kyiv, Borshagovska st.',null),
+('skif', md5('1357'), 'karamivan@gmail.com', 'user', 'Іван', 'Ivan', 'Карамзін', 'Karamzin','Україна, Кривий Ріг, вул.Космонавтів',  'Ukraine, Kriviy Rih, Cosmonavtiv st.', 1000.00),
+('aurora', md5('zxc21'), 'kreiser@gmail.com', 'user',null, 'Aurora',null, 'Berger',null, 'USA, New York', 500.00),
+('garik1', md5('qawsed'), 'grace@gmail.com', 'user', 'Ігор', 'Igor', 'Мирний', 'Mirniy','Україна, Рівне, вул. Співдружності', 'Ukraine, Rivne, Spivdruzhosti st.', 250.00);
