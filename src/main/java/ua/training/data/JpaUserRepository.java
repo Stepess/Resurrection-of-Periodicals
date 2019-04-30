@@ -33,7 +33,9 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public List<User> findAll(long max, int count) {
+    public List<User> findAll(long max, int count)
+    {
+        entityManager.
         return null;
     }
 }
