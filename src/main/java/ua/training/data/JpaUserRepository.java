@@ -29,7 +29,7 @@ public class JpaUserRepository implements UserRepository {
     @Override
     public User findByUsername(String username) {
 
-        return entityManager.find(User.class, 1);
+        return entityManager.find(User.class, 1L);
     }
 
     @Override
