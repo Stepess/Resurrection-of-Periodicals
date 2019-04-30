@@ -13,6 +13,7 @@ import ua.training.model.User;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -46,6 +47,7 @@ public class PeriodicalsController {
             multipartFile.transferTo(new File(user.getUsername() + "_" + multipartFile.getOriginalFilename()));
         }
 
+        user.setRegistrationDate(LocalDate.now());
         userService.save(user);
         model.addAttribute("username", user.getUsername());
         model.addFlashAttribute(user);

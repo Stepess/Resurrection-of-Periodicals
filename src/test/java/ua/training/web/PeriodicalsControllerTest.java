@@ -7,6 +7,8 @@ import ua.training.data.UserRepository;
 import ua.training.model.User;
 import ua.training.service.UserService;
 
+import java.time.LocalDate;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,7 +35,7 @@ public class PeriodicalsControllerTest {
     @Test
     public void shouldProcessRegistration() throws Exception {
         User unsaved = new User("MrDVader", "iAmYourFather", "mrDart13@farGalaxy.com", "Dart", "Vader");
-        User saved = new User(42L, "MrDVader", "iAmYourFather", "mrDart13@farGalaxy.com","Dart", "Vader");
+        User saved = new User(42L, "MrDVader", "iAmYourFather", "mrDart13@farGalaxy.com","Dart", "Vader", LocalDate.now());
 
         UserService mockService = mock(UserService.class);
         when(mockService.save(unsaved)).thenReturn(saved);

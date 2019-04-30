@@ -8,10 +8,12 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -46,7 +48,10 @@ public class User {
     @Email(message = "{email.valid}")
     private String email;
 
+    @Column(name = "registration_date")
+    private LocalDate registrationDate;
+
     public User(String username, String password, String email, String firstName, String lastName) {
-        this(null, username, password, email, firstName, lastName);
+        this(null, username, password, email, firstName, lastName, LocalDate.now());
     }
 }

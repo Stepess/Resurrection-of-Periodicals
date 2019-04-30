@@ -32,7 +32,7 @@ public class HibernateUserRepository implements UserRepository{
         Session session = getCurentSession();
         Serializable id = session.save(user);
         return new User((Long) id, user.getUsername(), user.getPassword(), user.getEmail(),
-                user.getFirstName(),user.getLastName());
+                user.getFirstName(),user.getLastName(), user.getRegistrationDate());
     }
 
     @Override
