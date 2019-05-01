@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class JdbcUserRepository implements UserRepository {
+public class JdbcUserRepository {
 
     private JdbcOperations jdbcOperations;
 
@@ -29,19 +29,16 @@ public class JdbcUserRepository implements UserRepository {
         this.jdbcOperations = jdbcOperations;
     }
 
-    @Override
     public User save(User user) {
         jdbcOperations.update(INSERT_USER, user.getUsername(), user.getLastName(),
                 user.getEmail(), user.getFirstName(), user.getLastName(), true);
         return user;
     }
 
-    @Override
     public User findByUsername(String username) {
         return jdbcOperations.queryForObject(FIND_USER_BY_USERNAME, this::mapUser, username);
     }
 
-    @Override
     public List<User> findAll(long max, int count) {
         return jdbcOperations.query(FIND_ALL_USERS, new Object[] {max, count}, this::mapUser);
     }

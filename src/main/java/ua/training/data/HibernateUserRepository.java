@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.List;
 
 //@Repository
-public class HibernateUserRepository implements UserRepository{
+public class HibernateUserRepository{
 
     private final SessionFactory sessionFactory;
 
@@ -27,7 +27,6 @@ public class HibernateUserRepository implements UserRepository{
         return sessionFactory.getCurrentSession();
     }
 
-    @Override
     public User save(User user) {
         Session session = getCurentSession();
         Serializable id = session.save(user);
@@ -35,7 +34,6 @@ public class HibernateUserRepository implements UserRepository{
                 user.getFirstName(),user.getLastName(), user.getRegistrationDate());
     }
 
-    @Override
     public User findByUsername(String username) {
         Session session = getCurentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -45,7 +43,6 @@ public class HibernateUserRepository implements UserRepository{
         return session.createQuery(query).getSingleResult();
     }
 
-    @Override
     public List<User> findAll(long max, int count) {
         Session session = getCurentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
