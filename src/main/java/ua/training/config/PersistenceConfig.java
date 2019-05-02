@@ -27,9 +27,10 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-public class AppConfig {
+public class PersistenceConfig {
 
     @Bean
+    @Profile("!test")
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -48,8 +49,8 @@ public class AppConfig {
         return transactionManager;
     }
 
-    //@Profile("development")
-    @Bean
+    /*@Bean
+    @Profile("test")
     //TODO add sql scripts
     public DataSource embeddedDataSource() {
         return new EmbeddedDatabaseBuilder()
@@ -61,7 +62,7 @@ public class AppConfig {
                 .setScriptEncoding("UTF-8")
                 .ignoreFailedDrops(true)
                 .build();
-    }
+    }*/
 
     /*@Bean
     public DataSource devDataSource() {
@@ -74,18 +75,18 @@ public class AppConfig {
         return ds;
     }*/
 
-    /*@Profile("QA")
     @Bean
-    public BasicDataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
+    @Profile("test")
+    public DataSource testDataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        //BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:tcp://localhost/~/periodicals");
+        //dataSource.setUrl("jdbc:h2:tcp://localhost/~/periodicals");
+        dataSource.setUrl("jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1");
         dataSource.setUsername("sa");
-        dataSource.setPassword("1111");
-        dataSource.setInitialSize(5);
-        dataSource.setMaxTotal(10);
+        dataSource.setPassword("");
         return dataSource;
-    }*/
+    }
 
    /* @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
@@ -99,6 +100,19 @@ public class AppConfig {
     }*/
 
     @Bean
+    @Profile("test")
+    public JpaVendorAdapter testJpaVendorAdapter() {
+        HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+        adapter.setDatabase(Database.H2);
+        adapter.setShowSql(true);
+        adapter.setGenerateDdl(true);
+        adapter.setDatabasePlatform("org.hibernate.dialect.H2Dialect");
+        return adapter;
+    }
+
+
+    @Bean
+    @Profile("!test")
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setDatabase(Database.MYSQL);

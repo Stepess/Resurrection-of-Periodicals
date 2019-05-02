@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@Import(AppConfig.class)
+@Import(PersistenceConfig.class)
 @ComponentScan(basePackages = "ua.training", excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
 })
