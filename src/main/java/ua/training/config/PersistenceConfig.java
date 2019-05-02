@@ -1,9 +1,12 @@
 package ua.training.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -20,17 +23,21 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
+@PropertySource("classpath:persistence.properties")
 public class PersistenceConfig {
+
+    @Autowired
+    private Environment env;
 
     @Bean
     @Profile("!test")
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/periodicals_db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-        dataSource.setUsername("root");
+        dataSource.setDriverClassName(env.getRequiredProperty("mysql.driver"));
+        dataSource.setUrl(env.getRequiredProperty("mysql.url"));
+        dataSource.setUsername(env.getRequiredProperty("mysql.user"));
         //dataSource.setPassword("root");
-        dataSource.setPassword("root1111");
+        dataSource.setPassword(env.getRequiredProperty("mysql.password"));
         return dataSource;
     }
 
@@ -38,7 +45,6 @@ public class PersistenceConfig {
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
-
         return transactionManager;
     }
 
@@ -46,10 +52,10 @@ public class PersistenceConfig {
     @Profile("test")
     public DataSource testDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
+        dataSource.setDriverClassName(env.getRequiredProperty("h2.driver"));
+        dataSource.setUrl(env.getRequiredProperty("h2.url"));
+        dataSource.setUsername(env.getRequiredProperty("h2.user"));
+        dataSource.setPassword(env.getRequiredProperty("h2.password"));
         return dataSource;
     }
 
@@ -60,7 +66,7 @@ public class PersistenceConfig {
         adapter.setDatabase(Database.H2);
         adapter.setShowSql(true);
         adapter.setGenerateDdl(true);
-        adapter.setDatabasePlatform("org.hibernate.dialect.H2Dialect");
+        adapter.setDatabasePlatform(env.getRequiredProperty("h2.hibernate.dialect"));
         return adapter;
     }
 
@@ -72,8 +78,7 @@ public class PersistenceConfig {
         adapter.setDatabase(Database.MYSQL);
         adapter.setShowSql(true);
         adapter.setGenerateDdl(false);
-       // adapter.setDatabasePlatform("org.hibernate.dialect.HSQLDialect");
-        adapter.setDatabasePlatform("org.hibernate.dialect.MySQL5InnoDBDialect");
+        adapter.setDatabasePlatform(env.getRequiredProperty("mysql.hibernate.dialect"));
         return adapter;
     }
 
@@ -84,7 +89,7 @@ public class PersistenceConfig {
                 new LocalContainerEntityManagerFactoryBean();
         emfb.setDataSource(dataSource);
         emfb.setJpaVendorAdapter(jpaVendorAdapter);
-        emfb.setPackagesToScan("ua.training.model");
+        emfb.setPackagesToScan(env.getRequiredProperty("domain.package"));
         return emfb;
     }
 
