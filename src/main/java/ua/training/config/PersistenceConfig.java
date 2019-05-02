@@ -1,8 +1,5 @@
 package ua.training.config;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.h2.jdbcx.JdbcDataSource;
-import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +7,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -23,7 +17,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
@@ -49,55 +42,16 @@ public class PersistenceConfig {
         return transactionManager;
     }
 
-    /*@Bean
-    @Profile("test")
-    //TODO add sql scripts
-    public DataSource embeddedDataSource() {
-        return new EmbeddedDatabaseBuilder()
-                .generateUniqueName(false)
-                .setName("testdb")
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("classpath:sql/schema.sql")
-                .addScript("classpath:sql/data.sql")
-                .setScriptEncoding("UTF-8")
-                .ignoreFailedDrops(true)
-                .build();
-    }*/
-
-    /*@Bean
-    public DataSource devDataSource() {
-        JdbcDataSource ds = new JdbcDataSource();
-        ds.setUrl("jdbc:h2:~/test;" +
-                "INIT=RUNSCRIPT FROM 'classpath:sql/schema.sql'\\;RUNSCRIPT FROM 'classpath:sql/data.sql';" +
-                "DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE");
-        ds.setUser("sa");
-        ds.setPassword("");
-        return ds;
-    }*/
-
     @Bean
     @Profile("test")
     public DataSource testDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        //BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
-        //dataSource.setUrl("jdbc:h2:tcp://localhost/~/periodicals");
         dataSource.setUrl("jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
         return dataSource;
     }
-
-   /* @Bean
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
-        LocalSessionFactoryBean ls = new LocalSessionFactoryBean();
-        ls.setDataSource(dataSource);
-        ls.setPackagesToScan("ua.training.model");
-        Properties properties = new Properties();
-        properties.setProperty("dialect", "org.hibernate.dialect.H2Dialect");
-        ls.setHibernateProperties(properties);
-        return ls;
-    }*/
 
     @Bean
     @Profile("test")
@@ -133,6 +87,7 @@ public class PersistenceConfig {
         emfb.setPackagesToScan("ua.training.model");
         return emfb;
     }
+
     @Bean
     public BeanPostProcessor persistenceTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
