@@ -18,12 +18,12 @@ USE `periodicals_db` ;
 -- -----------------------------------------------------
 ##DROP TABLE  IF EXISTS `periodicals_db`.`user`;
 
-CREATE TABLE IF NOT EXISTS `periodicals_db`.`user` (
+CREATE TABLE IF NOT EXISTS `periodicals_db`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `datetime_of_registration` DATETIME NOT NULL,
+  `registration_date` DATE NOT NULL,
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   `enabled` BOOLEAN DEFAULT true,
