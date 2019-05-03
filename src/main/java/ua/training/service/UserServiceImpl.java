@@ -5,9 +5,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ua.training.data.UserRepository;
+import ua.training.exception.UserNotFoundException;
 import ua.training.model.User;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -22,17 +24,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUsers(long max, int count) {
-        return userRepository.findByIdLessThanEqual(max, PageRequest.of(0, count));
+    public List<User> findUsers(long max, int offset, int limit) {
+        if (max < 0) {
+            throw new IllegalArgumentException("Max id cannot be negative");
+        }
+
+        if (offset > limit) {
+            throw new IllegalArgumentException("Offset should be less than limit");
+        }
+
+        List<User> users = userRepository.findByIdLessThanEqual(max, PageRequest.of(offset, limit));
+
+        if (CollectionUtil.isNullOrEmpty(users)) {
+            throw new UserNotFoundException();
+        }
+
+        return users;
     }
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).get();
+        return userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
     public User save(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
     }
 }

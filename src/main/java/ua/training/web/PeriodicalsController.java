@@ -67,7 +67,7 @@ public class PeriodicalsController {
             @RequestParam(value = "max", defaultValue = MAX_LONG_AS_STRING) long max,
             @RequestParam(value = "count", defaultValue = RECENT_USERS_LIMIT) int count
     ) {
-       return userService.findUsers(max, count);
+       return userService.findUsers(max, 0, count);
     }
 
 }
