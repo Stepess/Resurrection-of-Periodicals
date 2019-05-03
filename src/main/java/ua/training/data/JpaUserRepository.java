@@ -16,18 +16,18 @@ import java.util.UUID;
 @Primary
 @Repository
 @Transactional
-public class JpaUserRepository implements UserRepository {
+public class JpaUserRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
+    //@Override
     public User save(User user) {
         entityManager.persist(user);
         return user;
     }
 
-    @Override
+    //@Override
     public User update(User user) {
         User userDB = findById(user.getId());
         userDB.setUsername(user.getUsername());
@@ -38,13 +38,13 @@ public class JpaUserRepository implements UserRepository {
         return user;
     }
 
-    @Override
+    //@Override
     public User delete(User user) {
         entityManager.remove(user);
         return user;
     }
 
-    @Override
+    //@Override
     public User findByUsername(String username) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         ParameterExpression<String> parameter = cb.parameter(String.class, "username");
@@ -56,7 +56,7 @@ public class JpaUserRepository implements UserRepository {
         return query.getSingleResult();
     }
 
-    @Override
+    //@Override
     public List<User> findAll(long max, int count) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = cb.createQuery(User.class);
@@ -69,7 +69,7 @@ public class JpaUserRepository implements UserRepository {
                 .getResultList();
     }
 
-    @Override
+    //@Override
     public User findById(Long id) {
         return entityManager.find(User.class, id);
     }

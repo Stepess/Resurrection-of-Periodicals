@@ -13,6 +13,8 @@ import ua.training.model.User;
 
 import javax.transaction.Transactional;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,11 +38,11 @@ public class UserRepositoryTest {
 
         // WHEN
 
-        User byId = userRepository.findById(saved.getId());
+        Optional<User> byId = userRepository.findById(saved.getId());
 
         // THEN
 
-        assertEquals(user, byId);
+        assertEquals(user, byId.get());
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
@@ -55,7 +57,8 @@ public class UserRepositoryTest {
         // WHEN
 
         userRepository.delete(saved);
-        userRepository.findByUsername(user.getUsername());
+        Optional<User> byUsername = userRepository.findByUsername(user.getUsername());
+        byUsername.orElseThrow(() -> new EmptyResultDataAccessException(1));
     }
 
     @Test
@@ -69,7 +72,8 @@ public class UserRepositoryTest {
 
         // WHEN
 
-        User byId = userRepository.findById(user.getId());
+        Optional<User> optionalUser = userRepository.findById(user.getId());
+        User byId = optionalUser.get();
 
         // THEN
 
@@ -88,7 +92,9 @@ public class UserRepositoryTest {
 
         // WHEN
 
-        User byUsername = userRepository.findByUsername(user.getUsername());
+        Optional<User> userOptional = userRepository.findByUsername(user.getUsername());
+        User byUsername = userOptional.get();
+
 
         // THEN
 
@@ -115,11 +121,12 @@ public class UserRepositoryTest {
 
         User newUser =
                 new User(saved.getId(), "newName", "strongpass",  "Name", "Surname", "email@email.com", saved.getRegistrationDate());
-        userRepository.update(newUser);
+        userRepository.save(newUser);
 
         // THEN
 
-        User byId = userRepository.findById(saved.getId());
+        Optional<User> byIdOptional = userRepository.findById(saved.getId());
+        User byId = byIdOptional.get();
 
         // to check updated fields
         assertNotEquals(oldName, byId.getUsername());

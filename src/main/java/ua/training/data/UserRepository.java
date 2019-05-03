@@ -1,21 +1,18 @@
 package ua.training.data;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ua.training.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findAll(long max, int count);
+    List<User> findByIdLessThanEqual(long maxId, Pageable pageable);
 
-    User findById(Long id);
-
-    User findByUsername(String username);
-
-    User save(User user);
-
-    User update(User user);
-
-    User delete(User user);
+    Optional<User> findByUsername(String username);
 
 }

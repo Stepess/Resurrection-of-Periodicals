@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -20,10 +21,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:persistence.properties")
+@EnableJpaRepositories(basePackages = "ua.training.data")
 public class PersistenceConfig {
 
     @Autowired
@@ -90,8 +93,16 @@ public class PersistenceConfig {
         emfb.setDataSource(dataSource);
         emfb.setJpaVendorAdapter(jpaVendorAdapter);
         emfb.setPackagesToScan(env.getRequiredProperty("domain.package"));
+        emfb.setJpaProperties(hibernateProperties());
         return emfb;
     }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
+        return properties;
+    }
+
 
     @Bean
     public BeanPostProcessor persistenceTranslation() {
