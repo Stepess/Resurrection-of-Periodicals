@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ua.training.data.UserRepository;
 import ua.training.exception.UserNotFoundException;
 import ua.training.model.User;
+import ua.training.util.CollectionUtil;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -24,8 +25,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findUsers(long max, int offset, int limit) {
-        checkArgument(max < 0, "Max id cannot be negative");
-        checkArgument(offset > limit, "Offset should be less than limit");
+        checkArgument(max > 0, "Max id cannot be negative");
+        checkArgument(offset < limit, "Offset should be less than limit");
 
         List<User> users = userRepository.findByIdLessThanEqual(max, PageRequest.of(offset, limit));
 
@@ -51,5 +52,10 @@ public class UserServiceImpl implements UserService {
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 }
