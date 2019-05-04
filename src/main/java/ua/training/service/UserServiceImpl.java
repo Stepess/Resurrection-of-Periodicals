@@ -1,15 +1,14 @@
 package ua.training.service;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ua.training.data.UserRepository;
 import ua.training.exception.UserNotFoundException;
 import ua.training.model.User;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -25,13 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findUsers(long max, int offset, int limit) {
-        if (max < 0) {
-            throw new IllegalArgumentException("Max id cannot be negative");
-        }
-
-        if (offset > limit) {
-            throw new IllegalArgumentException("Offset should be less than limit");
-        }
+        checkArgument(max < 0, "Max id cannot be negative");
+        checkArgument(offset > limit, "Offset should be less than limit");
 
         List<User> users = userRepository.findByIdLessThanEqual(max, PageRequest.of(offset, limit));
 
