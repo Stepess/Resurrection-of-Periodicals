@@ -7,6 +7,7 @@
     <title>Periodicals</title>
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/resources/style.css" />">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
 </head>
 <body>
 <div class="container center-block">

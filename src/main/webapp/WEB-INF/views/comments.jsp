@@ -3,14 +3,14 @@
 <html>
 <head>
     <title>Periodicals</title>
-    <link rel="stylesheet"
-          type="text/css"
-          href="<c:url value="/resources/style.css" />">
+    <link rel="stylesheet" type="text/css"
+          href="<c:url value="/resources/style.css" />"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
 </head>
 <body>
 <c:forEach items="${commentList}" var="comment">
     <li id="comment_<c:out value="comment.id"/>">
-        <div class="commentUserId"><c:out value="${comment.userId}"/> </div>
+        <div class="commentUserId"><c:out value="${comment.userId}"/></div>
         <div class="commentMessage">
             <c:out value="${comment.message}"/>
         </div>

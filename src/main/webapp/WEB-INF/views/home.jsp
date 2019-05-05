@@ -4,14 +4,39 @@
 <html>
 <head>
     <title>Periodicals</title>
-    <link rel="stylesheet"
-          type="text/css"
-          href="<c:url value="/resources/style.css" />">
+    <link rel="stylesheet" type="text/css"
+          href="<c:url value="/resources/style.css" />"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
 </head>
 <body>
-<h1><s:message code="periodicals.welcome"/> </h1>
-<a href="<c:url value="/comments" />">Comments</a> |
-<a href="<s:url value="/periodicals/register" />">Register</a> |
-<a href="<s:url value="/comment/add"/>">Add comment</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="<c:url value="/comments" />">Comments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<s:url value="/periodicals/register" />">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<s:url value="/comment/add"/>">Add comment</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<h1><s:message code="periodicals.welcome"/></h1>
+
+<div class="container vertical-offset-100 min_height">
+    <div class="row">
+        <div class="col-lg-8 ">
+            <div class=" margin well">
+                <h1>Periodicals</h1>
+                info
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package ua.training.data;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {PersistenceConfig.class, RootConfig.class})
 @ActiveProfiles("test")
 @Transactional
+@Ignore
 public class UserRepositoryTest {
 
     //@Resource
