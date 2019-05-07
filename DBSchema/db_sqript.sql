@@ -16,7 +16,7 @@ USE `periodicals_db` ;
 -- -----------------------------------------------------
 -- Table `periodicals_db`.`user`
 -- -----------------------------------------------------
-##DROP TABLE  IF EXISTS `periodicals_db`.`user`;
+##DROP TABLE  IF EXISTS `periodicals_db`.`users`;
 
 CREATE TABLE IF NOT EXISTS `periodicals_db`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -115,6 +115,26 @@ CREATE TABLE IF NOT EXISTS `periodicals_db`.`subscription_has_publication` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `periodicals_db`.`authority`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `periodicals_db`.`authority` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `periodicals_db`.`user_authority`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `periodicals_db`.`user_authority` (
+	`authority_id` INT NOT NULL,
+    `user_id` INT NOT NULL,
+    PRIMARY KEY (`user_id`, `authority_id`))
+ENGINE = InnoDB;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

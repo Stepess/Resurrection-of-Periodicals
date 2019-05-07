@@ -39,8 +39,8 @@ public class PersistenceConfig {
         dataSource.setDriverClassName(env.getRequiredProperty("mysql.driver"));
         dataSource.setUrl(env.getRequiredProperty("mysql.url"));
         dataSource.setUsername(env.getRequiredProperty("mysql.user"));
-        dataSource.setPassword("root");
-        //dataSource.setPassword(env.getRequiredProperty("mysql.password"));
+        //dataSource.setPassword("root");
+        dataSource.setPassword(env.getRequiredProperty("mysql.password"));
         return dataSource;
     }
 

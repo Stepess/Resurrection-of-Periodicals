@@ -15,8 +15,7 @@
                     <h3 class="panel-title">login</h3>
                 </div>
                 <div class="panel-body">
-                    <form accept-charset="UTF-8" role="form" name="loginForm" method="POST"
-                          action="${pageContext.request.contextPath}/${sessionScope.role}/login">
+                    <sf:form method="POST" action='<s:url value="/login"' enctype="multipart/form-data">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="username" name="login"
@@ -35,7 +34,7 @@
                             <input class="btn btn-lg btn-success btn-block" type="submit"
                                    value="login">
                         </fieldset>
-                    </form>
+                    </sf:form>
                 </div>
             </div>
         </div>

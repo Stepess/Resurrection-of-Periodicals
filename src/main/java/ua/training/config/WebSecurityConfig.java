@@ -9,12 +9,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ua.training.data.UserRepository;
+import ua.training.service.UserDetailsServiceImpl;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     //DB auth
@@ -40,16 +45,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("user").password(encoder.encode("password")).roles("USER").and()
                 .withUser("admin").password(encoder.encode("1111")).roles("USER", "ADMIN");
+        auth.userDetailsService(new UserDetailsServiceImpl(userRepository));
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login")
+        http.formLogin()
+                .loginPage("/login")
+                .failureUrl("/login")
+                .successForwardUrl("/periodicals/me")
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .logoutUrl("/logout")
-                .and()
+                //.logout()
+                //.logoutSuccessUrl("/")
+                //.logoutUrl("/logout")
+                //.and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/console/**").permitAll()
@@ -68,10 +77,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe()
                 .tokenValiditySeconds(2419200)
-                .key("periodicals13");
+                .key("periodicals13")
+                .and()
+                .csrf();
 
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
+                // for h2 console only
+       // http.csrf().disable();
+        //http.headers().frameOptions().disable();
         /*<input id="remember_me" name="remember-me" type="checkbox"/>
 <label for="remember_me" class="inline">Remember me</label>*/
     }
