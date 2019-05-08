@@ -15,18 +15,18 @@
                     <h3 class="panel-title">login</h3>
                 </div>
                 <div class="panel-body">
-                    <sf:form method="POST" action='<s:url value="/login"' enctype="multipart/form-data">
+                    <sf:form method="POST" action="${pageContext.request.contextPath}/authenticate">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="username" name="login"
-                                       type="text" value="${param.login}">
+                                       type="text">
                                 <p class="text-danger">
                                     ${wrongLogin}
                                 </p>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="password"
-                                       name="password" type="password" value="">
+                                       name="password" type="password">
                                 <p class="text-danger">
                                     ${wrongPassword}
                                 </p>

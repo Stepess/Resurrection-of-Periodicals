@@ -45,15 +45,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("user").password(encoder.encode("password")).roles("USER").and()
                 .withUser("admin").password(encoder.encode("1111")).roles("USER", "ADMIN");
-        auth.userDetailsService(new UserDetailsServiceImpl(userRepository));
+        //auth.userDetailsService(new UserDetailsServiceImpl(userRepository));
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .loginPage("/login")
-                .failureUrl("/login")
-                .successForwardUrl("/periodicals/me")
+                .loginProcessingUrl("/authenticate")
+                .failureUrl("/login?error=true")
+                .defaultSuccessUrl("/periodicals/profile")
+                .usernameParameter("login")
+                .passwordParameter("password")
+                //.successForwardUrl()
                 .and()
                 //.logout()
                 //.logoutSuccessUrl("/")
