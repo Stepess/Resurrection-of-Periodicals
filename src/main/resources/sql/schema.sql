@@ -1,15 +1,18 @@
 DROP TABLE users IF EXISTS;
 
-create table users
+CREATE TABLE IF NOT EXISTS users
 (
-  id        LONG        not null auto_increment,
-  username  VARCHAR(50) not null,
-  password  VARCHAR(50) not null,
-  firstName VARCHAR(50) not null,
-  lastName  VARCHAR(50) not null,
-  email     VARCHAR(50) not null,
-  enabled   boolean     not null,
-  primary key (id)
+  id                INT         NOT NULL AUTO_INCREMENT,
+  username          VARCHAR(45) NOT NULL,
+  password          VARCHAR(45) NOT NULL,
+  email             VARCHAR(45) NOT NULL,
+  registration_date DATE        NOT NULL,
+  first_name        VARCHAR(45) NOT NULL,
+  last_name         VARCHAR(45) NOT NULL,
+  enabled           BOOLEAN DEFAULT true,
+  PRIMARY KEY (id),
+  UNIQUE INDEX login_UNIQUE (username ASC),
+  UNIQUE INDEX email_UNIQUE (email ASC)
 );
 
 DROP TABLE authorities IF EXISTS;

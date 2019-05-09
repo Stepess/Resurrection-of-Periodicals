@@ -1,10 +1,5 @@
-INSERT INTO users(username, password, firstName, lastName, email, enabled)
-VALUES ('senpai', '1234', 'Stepan', 'Yersh', 'step@gmail.com', true);
-INSERT INTO users(username, password, firstName, lastName, email, enabled)
-VALUES ('admin', '1111', 'alex', 'akka', 'aaaa123@gmail.com', true);
-insert into comments (user_id, message, date, latitude, longitude)
-VALUES (1, 'really useful comment', '2019-12-28', 432.2, 212.6);
-insert into comments (user_id, message, date, latitude, longitude)
-VALUES (1, 'another really useful comment', '2019-06-21', 301.2, 12.4);
-insert into comments (user_id, message, date, latitude, longitude)
-VALUES (2, 'admin comment uuuuu', '2019-01-03', 128.6, 105.9);
+insert into users (username, password, email, first_name, last_name, registration_date) values
+('senpai', 'qwerty13', 'stepanersh@gmail.com',  'Stepan',  'Yershov', '2018-09-11'),
+('skif', '1357', 'karamivan@gmail.com', 'Ivan', 'Karamzin', '2011-12-28'),
+('aurora', 'zxc21', 'kreiser@gmail.com','Aurora', 'Berger', '2014-10-01'),
+('garik1', 'qawsed', 'grace@gmail.com',  'Igor', 'Mirniy', '2017-02-26');

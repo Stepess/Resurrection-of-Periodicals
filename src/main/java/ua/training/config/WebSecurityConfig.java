@@ -18,8 +18,8 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserRepository userRepository;
+   // @Autowired
+   // private UserRepository userRepository;
 
 
     //DB auth
@@ -59,18 +59,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 //.successForwardUrl()
                 .and()
-                //.logout()
-                //.logoutSuccessUrl("/")
-                //.logoutUrl("/logout")
-                //.and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .logoutUrl("/logout")
+                .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/console/**").permitAll()
                 //.authorizeRequests()
-                /*.antMatchers("/periodicals/me").authenticated()
+                .antMatchers("/periodicals/me").authenticated()
                 .antMatchers(HttpMethod.POST, "/periodicals").authenticated()
-                .antMatchers("/periodicals/**", "/periodicals/mine").authenticated()*/
-                //.anyRequest().permitAll()
+                .antMatchers("/periodicals/**", "/periodicals/mine").authenticated()
+                .antMatchers("/periodicals/users").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/periodicals/register").permitAll()
+                .anyRequest().permitAll()
                 // to require https
                 .and()
                 .requiresChannel()

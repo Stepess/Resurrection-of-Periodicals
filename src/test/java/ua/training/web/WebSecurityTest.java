@@ -5,13 +5,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import ua.training.config.RootConfig;
 import ua.training.config.WebAppInitializer;
 import ua.training.config.WebSecurityConfig;
 
@@ -25,17 +28,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.servlet.Filter;
+import java.util.Date;
 
-@Ignore
+// TODO remove root config
+//@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebAppInitializer.class, WebSecurityConfig.class})
+@ContextConfiguration(classes = {WebAppInitializer.class, WebSecurityConfig.class, RootConfig.class})
 @WebAppConfiguration
+@ActiveProfiles("test")
 public class WebSecurityTest {
 
     public static final String ADMIN_URL = "/periodicals/users";
     public static final String LOGIN_URL = "/login";
-    public static final String REGISTER_URL = "/register";
-    public static final String PROFILE_URL = "/profile";
+    public static final String REGISTER_URL = "/periodicals/register";
+    public static final String PROFILE_URL = "/periodicals/profile";
     public static final String LOGOUT_URL = "/logout";
 
     @Autowired
@@ -53,13 +59,19 @@ public class WebSecurityTest {
                 .addFilter(springSecurityFilterChain)
                 .build();
 
-        System.out.println(context.getBean("HomeController"));
+//        System.out.println(context.getBean("HomeController"));
     }
 
     @Test
     public void shouldValidateCsrf() throws Exception {
         mvc.perform(post(REGISTER_URL)
-                .with(csrf().asHeader()))
+                .with(csrf())
+        .param("username", "stepan")
+        .param("password", "sadasads")
+        .param("email", "step@pan.com")
+        .param("firstName", "stepan")
+                .param("lastName", "yersh0")
+        .param("registrationDate", new Date().toString()))
                 .andExpect(status().isOk());
     }
 
@@ -104,25 +116,25 @@ public class WebSecurityTest {
     @Test
     public void shouldGiveAccessToProfilePageForAdmin() throws Exception {
         mvc.perform(get(PROFILE_URL).with(admin()))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
     @Test
     public void shouldGiveAccessToProfilePageForUser() throws Exception {
-        mvc.perform(get(PROFILE_URL).with(stepan()))
+        mvc.perform(get("/periodicals/senpai").with(stepan()))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void shouldNotGiveAccessToAdminPartForAnonymous() throws Exception {
         mvc.perform(get(ADMIN_URL))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
     public void shouldNotGiveAccessToProfilePageForAnonymous() throws Exception {
         mvc.perform(get(PROFILE_URL))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     private RequestPostProcessor admin() {
