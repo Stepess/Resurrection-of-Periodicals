@@ -43,7 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         auth.inMemoryAuthentication()
-                .withUser("user").password(encoder.encode("password")).roles("USER").and()
+                .withUser("user").password(encoder.encode("password")).roles("USER")
+                .and()
                 .withUser("admin").password(encoder.encode("1111")).roles("USER", "ADMIN");
         //auth.userDetailsService(new UserDetailsServiceImpl(userRepository));
     }
@@ -57,22 +58,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/periodicals/profile")
                 .usernameParameter("login")
                 .passwordParameter("password")
+                .permitAll()
                 //.successForwardUrl()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/")
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/console/**").permitAll()
-                //.authorizeRequests()
                 .antMatchers("/periodicals/me").authenticated()
                 .antMatchers(HttpMethod.POST, "/periodicals").authenticated()
+                .antMatchers("/periodicals/users/**").hasRole("ADMIN")
                 .antMatchers("/periodicals/**", "/periodicals/mine").authenticated()
-                .antMatchers("/periodicals/users").hasRole("ADMIN")
+                //.antMatchers("/periodicals/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/periodicals/register").permitAll()
-                .anyRequest().permitAll()
+                //.anyRequest().permitAll()
                 // to require https
                 .and()
                 .requiresChannel()
@@ -88,6 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf();
 
                 // for h2 console only
+                  //      .antMatchers("/").permitAll()
+                //.antMatchers("/console/**").permitAll()
        // http.csrf().disable();
         //http.headers().frameOptions().disable();
         /*<input id="remember_me" name="remember-me" type="checkbox"/>

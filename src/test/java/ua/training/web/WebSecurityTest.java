@@ -31,7 +31,7 @@ import javax.servlet.Filter;
 import java.util.Date;
 
 // TODO remove root config
-//@Ignore
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebAppInitializer.class, WebSecurityConfig.class, RootConfig.class})
 @WebAppConfiguration
