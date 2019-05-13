@@ -1,12 +1,16 @@
 package ua.training.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.training.data.UserRepository;
@@ -38,16 +42,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 .passwordEncoder(new StandardPasswordEncoder("53cr3t"));
     }*/
 
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository, PasswordEncoder encoder) {
+        return new UserDetailsServiceImpl(userRepository, encoder);
+    }
 
-    @Override
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        return daoAuthenticationProvider;
+    }
+
+    /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         auth.inMemoryAuthentication()
                 .withUser("user").password(encoder.encode("password")).roles("USER")
                 .and()
                 .withUser("admin").password(encoder.encode("1111")).roles("USER", "ADMIN");
-        //auth.userDetailsService(new UserDetailsServiceImpl(userRepository));
-    }
+        auth.userDetailsService();
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -55,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .loginProcessingUrl("/authenticate")
                 .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/periodicals/profile")
+                .defaultSuccessUrl("/periodicals/me")
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .permitAll()
@@ -66,13 +87,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/periodicals/me").authenticated()
-                .antMatchers(HttpMethod.POST, "/periodicals").authenticated()
                 .antMatchers("/periodicals/users/**").hasRole("ADMIN")
-                .antMatchers("/periodicals/**", "/periodicals/mine").authenticated()
-                //.antMatchers("/periodicals/**").hasRole("ADMIN")
+                .antMatchers("/periodicals/**", "/periodicals/me").authenticated()
+                .antMatchers(HttpMethod.POST, "/periodicals").authenticated()
                 .antMatchers(HttpMethod.POST, "/periodicals/register").permitAll()
-                //.anyRequest().permitAll()
+                .anyRequest().permitAll()
                 // to require https
                 .and()
                 .requiresChannel()
